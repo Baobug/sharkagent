@@ -304,7 +304,7 @@ M0 只有**手工端到端验证**（用 agent-browser 驱动真实 Chromium 逐
 | **⑤** | **首发是桌面 GUI 还是 MCP server 优先**？（`DESIGN.md` 说 GUI 先，`OPEN_SOURCE_PLAN.md` 的 M0 是 MCP） | 两份文档的 M0 定义**不一致**，需要拍板，否则 M4 会变成返工 |
 | **⑥** | **目标用户与首发清单**：先给自己/战队用，还是直接公开给陌生人用？ | 决定文档与打包的完备度门槛 |
 | **⑦** | **真实 pcap 样本**：有没有可公开的标准测试集？ | 契约测试与性能测试都要样本，没有就只能用合成 pcap |
-| **⑧** | **开源仓库归属**：个人号还是战队组织 `YunkaiSec`？ | 决定 LICENSE 版权人与 README 徽章链接 |
+| **⑧** | ~~**开源仓库归属**：个人号还是战队组织 `YunkaiSec`？~~ | ✅ **已定：个人号 `Baobug/sharkagent`**（2026-09-15） |
 | **⑨** | **模型选型与预算**：DeepSeek 还是其他？是否接受付费调用？ | 决定 `DEFAULT_CONFIG.baseUrl/model` 的默认值和文档示例 |
 | **⑩** | **是否需要 MCP 外壳（F-18）** | 若不需要，可砍掉整个 M4，直接省 3 人日 |
 
@@ -384,12 +384,24 @@ M0 只有**手工端到端验证**（用 agent-browser 驱动真实 Chromium 逐
 
 | # | 交付物 | 验收标准 | 状态 |
 |---|---|---|---|
-| D-39 | `LICENSE` | Apache-2.0 全文 + 版权人 + 年份 | ✅ 版权人暂写 "SharkAgent Contributors"，待⑧确认后替换 |
+| D-39 | `LICENSE` | Apache-2.0 全文 + 版权人 + 年份 | ✅ 版权人 `Copyright 2026 Baobug`，另附商标免责段 |
 | D-40 | `CONTRIBUTING.md` | 开发环境/提交规范/PR 流程 | ✅ 含 GPL 边界红线与"禁止提交真实抓包"条款 |
-| D-41 | `CODE_OF_CONDUCT.md` | 采用 Contributor Covenant 2.1 | ✅ |
-| D-42 | `SECURITY.md` | 私密漏洞上报渠道（邮箱/PGP） | ✅ 渠道占位待⑧补真实邮箱 |
-| D-43 | 商标声明 | 明确不隶属于 Wireshark 官方 | ✅ `TRADEMARKS.md` |
+| D-41 | `CODE_OF_CONDUCT.md` | 采用 Contributor Covenant 2.1 | ✅ 举报渠道：`[conduct]` Issue / 私信 `@Baobug` |
+| D-42 | `SECURITY.md` | 私密漏洞上报渠道（邮箱/PGP） | ✅ 用 GitHub Private Vulnerability Reporting（无需自建邮箱） |
+| D-43 | 商标声明 | 明确不隶属于 Wireshark 官方 | ✅ `TRADEMARKS.md`，另注明与 GitHub `@SharkAgent` 账号无关联 |
 | D-44 | 变更日志 | 采用 Keep a Changelog 格式 | ✅ `CHANGELOG.md` |
+
+### 9.7 仓库标识（已定稿）
+
+| 项 | 值 |
+|---|---|
+| 仓库全名 | `Baobug/sharkagent` |
+| 版权人 | `Baobug`（GitHub 公开身份，不暴露真名） |
+| `package.json` name | `sharkagent` |
+| 年份 | 2026 |
+| 安全上报渠道 | GitHub Private Vulnerability Reporting |
+
+> **重名核查结论（2026-09-15）**：npm / PyPI 上 `sharkagent` **未被占用**；GitHub 有 5 个同名仓库（均为不活跃的小项目，不冲突）；但 GitHub **用户名 `@SharkAgent` 已被他人占用** —— 已在 `TRADEMARKS.md` 显式声明无关联，避免用户找错地方。
 
 ---
 

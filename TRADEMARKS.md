@@ -4,6 +4,12 @@
 
 "SharkAgent" 是本项目使用的名称。当前**未注册商标**。在正式注册前，任何人都可以在不造成混淆的前提下引用本项目名称。
 
+本项目 GitHub 地址：`https://github.com/Baobug/sharkagent`
+
+> **注意**：GitHub 上存在一个名为 `@SharkAgent` 的**用户名**（非本项目）。
+> `github.com/SharkAgent` 与 `github.com/Baobug/sharkagent` 是两个完全不同的对象。
+> 本项目与该账号无任何关联。引用本项目时请使用完整路径 `Baobug/sharkagent`，避免歧义。
+
 ## 与 Wireshark 的关系
 
 **本项目不是 Wireshark 的官方项目，未获 Wireshark 基金会（Wireshark Foundation）的赞助、认可或背书。**

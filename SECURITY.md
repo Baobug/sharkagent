@@ -18,10 +18,15 @@ SharkAgent 的输入是抓包数据，可能包含凭据、内网拓扑、业务
 
 请通过以下渠道私下报告：
 
-- 邮箱：`security@<你的域名>`（待补充，见 `DEVELOPMENT_PLAN.md` 待确认项 ⑧）
-- 或使用 GitHub 的 Private Vulnerability Reporting（仓库 Settings → Security 开启后可见）
+- **首选：GitHub Private Vulnerability Reporting**
+  仓库 `Security` 标签页 → `Report a vulnerability`。
+  （维护者需先在 Settings → Security → Private vulnerability reporting 开启）
+- 备选：开一个**不含任何细节**的 Issue，只写"我希望私下报告一个安全问题，请提供联系方式"，维护者会主动联系你。
 
-邮件建议包含：影响版本 / commit、复现步骤、最小 PoC、你评估的严重级别、是否愿意被署名致谢。
+> ⚠️ **申报前请先确认渠道已开通**：本项目当前未设置独立安全邮箱，
+> 上面第一条是唯一可用的私密渠道。若该渠道未开启，请用备选方式先建立联系。
+
+报告建议包含：影响版本 / commit、复现步骤、最小 PoC、你评估的严重级别、是否愿意被署名致谢。
 
 ## 响应时限
 

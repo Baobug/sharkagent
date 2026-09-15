@@ -186,7 +186,7 @@
       same "printed page" as the copyright notice for easier
       identification within third-party archives.
 
-   Copyright 2026 SharkAgent Contributors
+   Copyright 2026 Baobug (https://github.com/Baobug)
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -199,3 +199,10 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+
+   ----------------------------------------------------------------------
+
+   SharkAgent is an independent project. It is NOT affiliated with,
+   endorsed by, or sponsored by the Wireshark Foundation. "Wireshark",
+   "tshark" and "sharkd" are trademarks of the Wireshark Foundation.
+   See TRADEMARKS.md for details.

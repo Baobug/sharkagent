@@ -1,10 +1,15 @@
 {
-  "name": "shark-agent",
+  "name": "sharkagent",
   "private": true,
   "version": "0.1.0",
   "type": "module",
   "description": "SharkAgent - AI-native network traffic analysis desktop app (Wireshark ecosystem + Agent)",
   "license": "Apache-2.0",
+  "author": "Baobug (https://github.com/Baobug)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Baobug/sharkagent.git"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",

@@ -1,10 +1,16 @@
 # SharkAgent
 
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](./LICENSE)
+[![Tests](https://img.shields.io/badge/tests-57%20passing-brightgreen.svg)](#自检与测试)
+[![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6.svg)](./tsconfig.json)
+
 原生 AI 流量分析桌面软件 —— 在流量列表/详情的右键菜单里直接调用 AI 研判异常、安全风险与性能瓶颈。
 
 > 架构与路线见 [`../DESIGN.md`](../DESIGN.md)、开源策略见 [`../OPEN_SOURCE_PLAN.md`](../OPEN_SOURCE_PLAN.md)。
 > 开发细节与交付清单（模块职责、接口定义、里程碑、测试方案、风险登记）见 [`DEVELOPMENT_PLAN.md`](./DEVELOPMENT_PLAN.md)。
 > 本目录是 **M0 前端外壳 + AI 接入层** 的可运行实现，后端（tshark/sharkd 接入）尚未接入。
+
+**与 Wireshark 的关系**：本项目不是 Wireshark 官方项目，未获 Wireshark Foundation 赞助或背书。详见 [`TRADEMARKS.md`](./TRADEMARKS.md)。
 
 ---
 
