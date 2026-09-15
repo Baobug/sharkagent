@@ -40,8 +40,8 @@ function flow(patch: Partial<FlowRecord> = {}): FlowRecord {
 
 describe('redactHeaders — 按字段名脱敏', () => {
   test('T-01 Authorization 值被替换，字段名保留', () => {
-    const out = redactHeaders('Host: a.com\r\nAuthorization: Bearer sk-abcdef123456\r\n');
-    assert.ok(!out!.includes('sk-abcdef123456'), '原始凭据不应残留');
+    const out = redactHeaders('Host: a.com\r\nAuthorization: Bearer sk-EXAMPLEabcdef123456\r\n');
+    assert.ok(!out!.includes('sk-EXAMPLEabcdef123456'), '原始凭据不应残留');
     assert.ok(out!.includes('Authorization: ' + MASK), '字段名应保留，仅值被替换');
     assert.ok(out!.includes('Host: a.com'), '非敏感字段不应被改动');
   });
@@ -98,9 +98,9 @@ describe('redactBody — 按键名与字面量脱敏', () => {
   });
 
   test('T-05 兜底：独立出现（无键名）的凭据字面量仍被抹掉', () => {
-    const body = '{"note":"sk-live-abcdefgh12345678"}';
+    const body = '{"note":"sk-live-EXAMPLEabcdefgh12345678"}';
     const out = redactBody(body)!;
-    assert.ok(!out.includes('sk-live-abcdefgh12345678'), 'sk- 字面量应被兜底清除');
+    assert.ok(!out.includes('sk-live-EXAMPLEabcdefgh12345678'), 'sk- 字面量应被兜底清除');
   });
 
   test('T-05b JWT 三段的字面量被抹掉', () => {
@@ -186,15 +186,15 @@ describe('REGRESSION — 反向断言：确保上面测的是真脱敏而不是�
   test('T-06 若把脱敏函数换成恒等函数，T-01/T-04 的断言必须失败', () => {
     // 用恒等实现模拟"脱敏被误删"的回归场景
     const identity = (s?: string) => s;
-    const headers = redactHeaders('Authorization: Bearer sk-real-secret')!;
+    const headers = redactHeaders('Authorization: Bearer sk-EXAMPLE-real-secret')!;
     const body = redactBody('{"password":"p@ss"}')!;
 
     // 真实实现必须与恒等实现结果不同 —— 这正是本测试的意义
-    assert.notEqual(headers, identity('Authorization: Bearer sk-real-secret'));
+    assert.notEqual(headers, identity('Authorization: Bearer sk-EXAMPLE-real-secret'));
     assert.notEqual(body, identity('{"password":"p@ss"}'));
 
     // 且必须不含原文
-    assert.ok(!headers.includes('sk-real-secret'));
+    assert.ok(!headers.includes('sk-EXAMPLE-real-secret'));
     assert.ok(!body.includes('p@ss'));
   });
 });
