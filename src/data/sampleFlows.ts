@@ -9,7 +9,7 @@
  * 慢响应大体积下载（性能），方便一眼看出 AI 分析的差异。
  */
 
-import type { FlowRecord } from './flow';
+import type { FlowRecord } from './flow.ts';
 
 /** 第 116 帧：明文 HTTP 请求，URL 携带 token —— 典型安全问题样本 */
 const frame116: FlowRecord = {

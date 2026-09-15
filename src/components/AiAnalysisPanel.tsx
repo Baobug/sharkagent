@@ -9,9 +9,9 @@
  */
 
 import { useEffect, useRef } from 'react';
-import { useAgentAnalysis } from './useAgentAnalysis';
-import type { FlowRecord } from '../data/flow';
-import { redactionHits } from '../agent/redact';
+import { useAgentAnalysis } from './useAgentAnalysis.ts';
+import type { FlowRecord } from '../data/flow.ts';
+import { redactionHits } from '../agent/redact.ts';
 
 interface Props {
   /** 被分析的流量；为 null 时侧边栏收起 */

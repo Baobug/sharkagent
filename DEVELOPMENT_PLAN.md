@@ -169,7 +169,7 @@ class AgentError extends Error {
 
 ## 五、第三方依赖与环境要求
 
-### 5.1 现有依赖（M0，共 7 个，已锁定）
+### 5.1 现有依赖（M0，共 8 个，已锁定）
 
 | 包 | 版本 | 用途 |
 |---|---|---|
@@ -178,8 +178,10 @@ class AgentError extends Error {
 | vite | ^6.0.7 | 构建 |
 | @vitejs/plugin-react | ^4.3.4 | 构建 |
 | @types/react / react-dom | ^18.3.x | 类型 |
+| @types/node | ^22.20.2 | 仅让 `tsc` 识别 `node:test` 类型（测试用，不进产物） |
 
 > 运行时零依赖（除 React）。**新增依赖需在 PR 中说明为何不能用标准库/现有依赖解决。**
+> 测试框架用的是 Node 内置 `node:test` + `node:assert`，**没有引入 vitest / jest**——这也是 ponytail 阶梯的直接结果。
 
 ### 5.2 M1 待引入
 
@@ -233,6 +235,10 @@ class AgentError extends Error {
 ---
 
 ## 七、测试方案
+
+> **当前实测状态（2026-09-14）**：`npm test` → **57 用例 / 13 套件 全绿**；`npm run typecheck` → **0 error**；`npm run build` → **通过（57.98 kB gzip）**。一条命令跑全部：`npm run verify`。
+>
+> 测试运行方式：`node --test --experimental-strip-types`（Node 22 原生 TS 剥离），**零新增测试框架依赖**。唯一新增的是 `@types/node`（devDependency，只为让 `tsc` 识别 `node:test` 类型）。
 
 ### 7.1 现状（诚实说明）
 
@@ -317,10 +323,10 @@ M0 只有**手工端到端验证**（用 agent-browser 驱动真实 Chromium 逐
 | D-03 | 配置层 | `src/agent/agent.config.ts` | 三级优先级生效；`enabled=false` 时零请求 | ✅ |
 | D-04 | 调用层 | `src/agent/agentClient.ts` | SSE 流式可用；7 类错误可分类；可取消 | ✅ |
 | D-05 | 上下文层 | `src/agent/prompts.ts` | 五段式输出结构稳定；超长可裁剪 | ✅ |
-| D-06 | 安全层 | `src/agent/redact.ts` | 10 条测试用例（T-01~T-10）全绿 | ⚠️ **代码就绪，测试未写** |
+| D-06 | 安全层 | `src/agent/redact.ts` | 10 条测试用例（T-01~T-10）全绿 | ✅ **57 用例全绿**（含修复 BUG-01） |
 | D-07 | 右键菜单 | `src/components/ContextMenu.tsx`、`useContextMenu.ts` | 列表与详情区均可触发；ESC/外部点击可关闭 | ✅ |
 | D-08 | 列表与详情 | `PacketList.tsx`、`FlowDetail.tsx` | 菜单目标决策符合 F-02 | ✅ |
-| D-09 | AI 侧边栏 | `AiAnalysisPanel.tsx`、`useAgentAnalysis.ts` | 流式/复制/重分析/停止均可用 | ⚠️ 错误重试路径未断言 |
+| D-09 | AI 侧边栏 | `AiAnalysisPanel.tsx`、`useAgentAnalysis.ts` | 流式/复制/重分析/停止均可用 | ✅ **错误重试路径已单测覆盖** |
 | D-10 | 设置面板 | `AgentSettings.tsx` | 改配置立即生效；可恢复默认 | ✅ |
 | D-11 | 样式 | `src/styles/app.css` | 浅色主题；信息密度可比 Wireshark | ✅ |
 | D-12 | **tshark 封装** | `src/engine/tshark.ts` | 真实 pcap → `FlowRecord[]`；无 libwireshark 链接 | ⬜ ⛔ 待① |
@@ -346,9 +352,9 @@ M0 只有**手工端到端验证**（用 agent-browser 驱动真实 Chromium 逐
 
 | # | 交付物 | 路径 | 验收标准 | 状态 |
 |---|---|---|---|---|
-| D-25 | 脱敏单测 | `src/agent/redact.test.ts` | T-01~T-06 全绿（含 T-06 反向断言） | ⬜ **建议立即做** |
-| D-26 | 错误分类单测 | `src/agent/agentClient.test.ts` | T-08/T-09 全绿（mock fetch） | ⬜ **建议立即做** |
-| D-27 | 上下文裁剪单测 | `src/agent/prompts.test.ts` | T-07 全绿 | ⬜ |
+| D-25 | 脱敏单测 | `src/agent/redact.test.ts` | T-01~T-06 全绿（含 T-06 反向断言） | ✅ **22 用例全绿** |
+| D-26 | 调用层单测 | `src/agent/agentClient.test.ts` | 开关/ mock / 6 类 HTTP 错误 / 取消 / 超时全绿 | ✅ **29 用例全绿** |
+| D-27 | 提示词与裁剪单测 | `src/agent/prompts.test.ts` | T-07~T-09 全绿（含注入防护断言） | ✅ **含注入防护条款新断言** |
 | D-28 | E2E 验证记录 | `verify-ai-panel.png` | 截图可复现右键→分析→流式 | ✅ |
 | D-29 | 测试报告 | `docs/TEST_REPORT.md` | 用例数/通过数/覆盖率/已知缺陷 | ⬜ |
 | D-30 | 性能测试报告 | `docs/PERF_REPORT.md` | 100MB pcap 的耗时/内存/token 数 | ⬜ M2 |
@@ -359,7 +365,7 @@ M0 只有**手工端到端验证**（用 agent-browser 驱动真实 Chromium 逐
 |---|---|---|---|---|
 | D-31 | 开发启动脚本 | `npm run dev` | 一条命令起开发服务器 | ✅ |
 | D-32 | 构建脚本 | `npm run build` | 类型检查 + 产物生成 | ✅ |
-| D-33 | 测试脚本 | `"test": "node --test"` | 一条命令跑全部单测 | ⬜ |
+| D-33 | 测试脚本 | `npm test` / `npm run verify` | 一条命令跑全部单测（57 用例） | ✅ |
 | D-34 | 环境变量模板 | `.env.example` | 覆盖 4 个可注入变量 | ✅ |
 | D-35 | 忽略规则 | `.gitignore` | 依赖/产物/`.env*`/Rust target 全覆盖 | ✅ |
 | D-36 | **打包脚本** | `npm run tauri build` | 产出 msi/nsis（Win）、dmg（mac）、appimage（Linux） | ⬜ ⛔ 待①② |
@@ -374,22 +380,32 @@ M0 只有**手工端到端验证**（用 agent-browser 驱动真实 Chromium 逐
 
 > **说明**：SharkAgent 是本地单机桌面工具，配置存 `localStorage`、密钥交 OS keyring，没有服务端也没有持久化实体，**"交付数据表与迁移脚本"这一项在本项目里不成立**。若未来要做"分析历史/团队共享"，届时才需要 SQLite（本地）或 PostgreSQL（服务端），现在建表属投机性设计。
 
-### 9.6 开源必备文件（**当前最大缺口**）
+### 9.6 开源必备文件
 
 | # | 交付物 | 验收标准 | 状态 |
 |---|---|---|---|
-| D-39 | `LICENSE` | Apache-2.0 全文 + 版权人 + 年份 | ⬜ ⛔ 待⑧ |
-| D-40 | `CONTRIBUTING.md` | 开发环境/提交规范/PR 流程 | ⬜ |
-| D-41 | `CODE_OF_CONDUCT.md` | 采用 Contributor Covenant 2.1 | ⬜ |
-| D-42 | `SECURITY.md` | 私密漏洞上报渠道（邮箱/PGP） | ⬜ |
-| D-43 | 商标声明 | 明确不隶属于 Wireshark 官方 | ⬜ |
+| D-39 | `LICENSE` | Apache-2.0 全文 + 版权人 + 年份 | ✅ 版权人暂写 "SharkAgent Contributors"，待⑧确认后替换 |
+| D-40 | `CONTRIBUTING.md` | 开发环境/提交规范/PR 流程 | ✅ 含 GPL 边界红线与"禁止提交真实抓包"条款 |
+| D-41 | `CODE_OF_CONDUCT.md` | 采用 Contributor Covenant 2.1 | ✅ |
+| D-42 | `SECURITY.md` | 私密漏洞上报渠道（邮箱/PGP） | ✅ 渠道占位待⑧补真实邮箱 |
+| D-43 | 商标声明 | 明确不隶属于 Wireshark 官方 | ✅ `TRADEMARKS.md` |
+| D-44 | 变更日志 | 采用 Keep a Changelog 格式 | ✅ `CHANGELOG.md` |
 
 ---
 
 ## 十、立即可以开工的三件事（不依赖任何待确认项）
 
-| 顺序 | 任务 | 工作量 | 收益 |
-|---|---|---|---|
-| 1 | 补 D-25/D-26/D-27 三个单测（`node:test`，零新依赖） | 0.5 天 | 锁住脱敏与错误分类两条安全/钱路径 |
-| 2 | 补 D-39~D-43 开源必备文件 | 0.5 天 | 解除"不能公开"阻塞 |
-| 3 | `git init` + 首次提交（把 `wireshark/` 排除或加 submodule） | 0.2 天 | 有回滚点，能开工 M1 |
+| 顺序 | 任务 | 工作量 | 收益 | 状态 |
+|---|---|---|---|---|
+| 1 | 补 D-25/D-26/D-27 三个单测（`node:test`，零新依赖） | 0.5 天 | 锁住脱敏与错误分类两条安全/钱路径 | ✅ **已完成，57 用例全绿，过程中揪出 2 个真 BUG** |
+| 2 | 补 D-39~D-43 开源必备文件 | 0.5 天 | 解除"不能公开"阻塞 | ✅ 已完成 |
+| 3 | `git init` + 首次提交（把 `wireshark/` 排除或加 submodule） | 0.2 天 | 有回滚点，能开工 M1 | ✅ 已完成（提交 `4518847`） |
+
+### 10.1 本轮补测揪出的真实缺陷（写测试的价值证明）
+
+| # | 缺陷 | 影响 | 根因 | 修复 |
+|---|---|---|---|---|
+| **BUG-01** | `sk-` 密钥兜底脱敏**完全失效** | **高**：形如 `sk-live-xxxx` / `sk-proj-xxxx` 的真实 API Key 会原样送往模型服务 | 正则 `/\b(sk-[A-Za-z0-9]{8,})\b/` 的字符类未包含 `-`，导致 `sk-live-...` 在 `live`（仅 4 字符）处撞上连字符，`{8,}` 不满足，整条正则静默不匹配 | 改为 `/\bsk-[A-Za-z0-9_\-]{8,}\b/`，并用 `notask-abcdefgh` 做反向断言确认无过度匹配 |
+| **BUG-02** | `AgentConfig` 被当作值导入 | **低**（潜在）：Vite/esbuild 会静默剥离，但严格 ESM 下直接抛 `SyntaxError`；若将来换打包器或走 SSR 会立即炸 | `agentClient.ts` 第 17 行 `import { AgentConfig }` 未加 `type` 修饰，而该符号是纯类型导出 | 改为 `import { type AgentConfig, ... }` |
+
+> **结论**：这两个缺陷在本轮之前**没有任何自动化手段能发现**——BUG-01 只能靠人工构造带连字符的密钥样本，BUG-02 被 Vite 的宽松行为掩盖。这直接验证了"测试方案"一节里"T-06 反向断言最易漏"的判断。

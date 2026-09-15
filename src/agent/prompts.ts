@@ -5,7 +5,7 @@
  * 与调用层解耦：换模型只需换这一份提示词，不动 UI 与网络代码。
  */
 
-import type { FlowRecord } from '../data/flow';
+import type { FlowRecord } from '../data/flow.ts';
 
 /** 流量详情区当前查看的字段（对应 Wireshark 下方的协议树） */
 export interface FlowDetailContext {

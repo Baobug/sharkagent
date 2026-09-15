@@ -8,8 +8,8 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { analyzeFlow, AgentError, type AnalyzeHandle } from '../agent/agentClient';
-import type { FlowRecord } from '../data/flow';
+import { analyzeFlow, AgentError, type AnalyzeHandle } from '../agent/agentClient.ts';
+import type { FlowRecord } from '../data/flow.ts';
 
 export type AnalysisStatus = 'idle' | 'connecting' | 'streaming' | 'done' | 'error';
 

@@ -6,9 +6,9 @@
  *               详情区右键固定分析"当前正在查看"的这条流量。
  */
 
-import { useContextMenuWithRender } from './ContextMenu';
-import type { FlowRecord } from '../data/flow';
-import { layersForFlow } from '../data/sampleFlows';
+import { useContextMenuWithRender } from './ContextMenu.tsx';
+import type { FlowRecord } from '../data/flow.ts';
+import { layersForFlow } from '../data/sampleFlows.ts';
 
 interface Props {
   flow: FlowRecord | null;

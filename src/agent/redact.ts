@@ -8,7 +8,7 @@
  * 保留字段名与长度信息，让模型仍能判断"此处存在凭据且未加密传输"这一类安全问题。
  */
 
-import type { FlowRecord } from '../data/flow';
+import type { FlowRecord } from '../data/flow.ts';
 
 /** 需要整体替换的敏感请求头字段名（大小写不敏感） */
 export const SENSITIVE_HEADERS: string[] = [
@@ -114,7 +114,9 @@ export function redactBody(raw?: string): string | undefined {
     return whole;
   });
   // 兜底：常见密钥/令牌字面量（JWT、sk- 开头、Bearer 后随）
-  out = out.replace(/\b(sk-[A-Za-z0-9]{8,})\b/g, MASK);
+  // 注意 [A-Za-z0-9_\-] 必须允许连字符与下划线：真实密钥形如 sk-live-xxxx / sk-proj-xxxx，
+  // 若只写 [A-Za-z0-9] 则 "live" 段只有 4 字符就撞上连字符，{8,} 不满足，整个正则静默失效。
+  out = out.replace(/\bsk-[A-Za-z0-9_\-]{8,}\b/g, MASK);
   out = out.replace(/\beyJ[A-Za-z0-9_\-]{8,}\.[A-Za-z0-9_\-]{8,}\.[A-Za-z0-9_\-]{8,}\b/g, MASK);
   out = out.replace(/Bearer\s+[A-Za-z0-9._\-]+/gi, `Bearer ${MASK}`);
   // 中国大陆手机号 / 18 位身份证

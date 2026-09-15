@@ -9,8 +9,8 @@
  *         由上层决定交给 AI 还是做别的（复制、导出、标记…）。
  */
 
-import { useContextMenuWithRender } from './ContextMenu';
-import type { FlowRecord } from '../data/flow';
+import { useContextMenuWithRender } from './ContextMenu.tsx';
+import type { FlowRecord } from '../data/flow.ts';
 
 interface Props {
   flows: FlowRecord[];

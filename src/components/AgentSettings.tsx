@@ -9,7 +9,7 @@
  */
 
 import { useEffect, useState } from 'react';
-import { loadConfig, saveConfig, DEFAULT_CONFIG, type AgentConfig } from '../agent/agent.config';
+import { loadConfig, saveConfig, DEFAULT_CONFIG, type AgentConfig } from '../agent/agent.config.ts';
 
 interface Props {
   open: boolean;

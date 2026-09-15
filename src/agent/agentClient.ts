@@ -14,13 +14,13 @@
  */
 
 import {
-  AgentConfig,
+  type AgentConfig,
   chatCompletionsUrl,
   loadConfig,
-} from './agent.config';
-import { SYSTEM_PROMPT, buildUserMessage, truncateContext, type FlowDetailContext } from './prompts';
-import { redactFlow } from './redact';
-import type { FlowRecord } from '../data/flow';
+} from './agent.config.ts';
+import { SYSTEM_PROMPT, buildUserMessage, truncateContext, type FlowDetailContext } from './prompts.ts';
+import { redactFlow } from './redact.ts';
+import type { FlowRecord } from '../data/flow.ts';
 
 /** 分析过程回调 */
 export interface AnalyzeCallbacks {

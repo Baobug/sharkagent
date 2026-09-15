@@ -89,6 +89,28 @@ AiAnalysisPanel ──► useAgentAnalysis ──► agentClient ──► agent
 
 ---
 
+## 自检与测试
+
+```bash
+npm run typecheck   # tsc --noEmit，应为 0 error
+npm test            # node --test，57 用例（脱敏 / 提示词 / 调用层）
+npm run build       # 生产构建
+npm run verify      # 上面三件事一次跑完
+```
+
+测试用 Node 内置的 `node:test` + `node:assert`，**没有引入 vitest/jest**。
+
+| 测试文件 | 覆盖重点 |
+|---|---|
+| `src/agent/redact.test.ts` | 22 用例：敏感头/键名/凭据字面量、大小写不敏感、纯函数性、以及一组**反向断言**（防止脱敏被改成空实现还能通过） |
+| `src/agent/agentClient.test.ts` | 29 用例：关闭开关零请求、mock 零请求、6 类 HTTP 错误映射、`retryable` 标记、abort 静默、超时分类、**上行报文不含凭据** |
+| `src/agent/prompts.test.ts` | 需求要求的字段是否都进了上下文、提示注入条款是否还在、截断函数是否真截断 |
+
+> 补测时揪出两个真实缺陷（`sk-` 密钥脱敏正则静默失效、`AgentConfig` 值导入），
+> 详见 `DEVELOPMENT_PLAN.md` 第 10.1 节。
+
+---
+
 ## 安全说明
 
 - **脱敏先于发送**：`analyzeFlow` 内部第一步就是 `redactFlow`，调用方无法绕过。

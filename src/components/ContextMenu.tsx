@@ -4,7 +4,7 @@
  * 【作用】把 useContextMenu 的菜单状态渲染成浮层，不含任何业务判断。
  */
 
-import { useContextMenu, type MenuItem } from './useContextMenu';
+import { useContextMenu, type MenuItem } from './useContextMenu.ts';
 
 interface Props {
   menu: { x: number; y: number; items: MenuItem[] } | null;

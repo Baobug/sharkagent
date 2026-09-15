@@ -11,13 +11,13 @@
  */
 
 import { useCallback, useMemo, useState } from 'react';
-import { PacketList } from './components/PacketList';
-import { FlowDetail } from './components/FlowDetail';
-import { AiAnalysisPanel } from './components/AiAnalysisPanel';
-import { AgentSettings } from './components/AgentSettings';
-import { SAMPLE_FLOWS, layersForFlow } from './data/sampleFlows';
-import { loadConfig, type AgentConfig } from './agent/agent.config';
-import type { FlowRecord } from './data/flow';
+import { PacketList } from './components/PacketList.tsx';
+import { FlowDetail } from './components/FlowDetail.tsx';
+import { AiAnalysisPanel } from './components/AiAnalysisPanel.tsx';
+import { AgentSettings } from './components/AgentSettings.tsx';
+import { SAMPLE_FLOWS, layersForFlow } from './data/sampleFlows.ts';
+import { loadConfig, type AgentConfig } from './agent/agent.config.ts';
+import type { FlowRecord } from './data/flow.ts';
 
 export default function App() {
   const flows = SAMPLE_FLOWS;
